@@ -12,3 +12,18 @@ export type TournamentCardProps = {
   bannedMaps: string[];
   stage: string;
 };
+
+export type TournamentEditCardProps = {
+  tournamentNameOnChange: (value: string) => void;
+  tmIconOnChange: (value: string) => void;
+  dateOnChange: (value: string) => void;
+  timeOnChange: (value: string) => void;
+  team1OnChange: (value: string) => void;
+  team1IconOnChange: (value: string) => void;
+  team2OnChange: (value: string) => void;
+  team2IconOnChange: (value: string) => void;
+  matchScore1OnChange: (value: string) => void;
+  matchScore2OnChange: (value: string) => void;
+  bannedMapsOnChange: (value: string) => void;
+  stageOnChange: (value: string) => void;
+};

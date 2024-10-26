@@ -5,8 +5,12 @@ import MapRounds from "@/components/MapRounds";
 import MapTable from "@/components/MapTable";
 import MapTabs from "@/components/MapTabs";
 import TournamentCard from "@/components/TournamentCard";
+import TournamentEditCard from "@/components/TournamentCardEdit";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/Card";
+import { Input } from "@/components/ui/input";
 import { MapTableProps } from "@/types/Map";
+import { PlusIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -71,7 +75,7 @@ export default function Home() {
       </div>
       <div className="flex flex-col xl:flex-row items-center justify-center p-10 gap-10 ">
         <div className="w-full xl:w-1/2 flex flex-col gap-y-8 ">
-          <TournamentCard
+          <TournamentEditCard
             bannedMaps={["Abbys", "Split"]}
             date="Saturday, October 26th"
             team1="Team 1"
@@ -84,14 +88,25 @@ export default function Home() {
             matchScore2={1}
             stage="PlayOffs: Upper Final"
             time="1:00 PM +03"
+            bannedMapsOnChange={() => {}}
+            dateOnChange={() => {}}
+            matchScore1OnChange={() => {}}
+            matchScore2OnChange={() => {}}
+            stageOnChange={() => {}}
+            team1IconOnChange={() => {}}
+            team1OnChange={() => {}}
+            team2IconOnChange={() => {}}
+            team2OnChange={() => {}}
+            timeOnChange={() => {}}
+            tournamentNameOnChange={() => {}}
+            tmIconOnChange={() => {}}
           />
           <div className="flex flex-col space-y-20">
             <div className="flex flex-col gap-8">
-              <MapTabs
-                maps={maps}
-                activeMapIndex={activeMapIndex}
-                onMapChange={setActiveMapIndex}
-              />
+              <div className="flex gap-4">
+                <Input className="max-w-64" value={"Map 1"}/>
+                <Button variant={"outline"}><PlusIcon className="size-6" color="#fff" /></Button>
+              </div>
               <MapHeader
                 team1="Team 1"
                 team2="Team 2"
