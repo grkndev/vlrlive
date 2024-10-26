@@ -10,9 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/input";
 import { MapTableProps } from "@/types/Map";
-import { PlusIcon } from "lucide-react";
+import { Check, PlusIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import MapTableEdit from "@/components/MapTableEdit";
 
 const tableData: MapTableProps = {
   team1: [
@@ -73,72 +79,259 @@ export default function Home() {
           alt="bblgptlogo"
         />
       </div>
-      <div className="flex flex-col xl:flex-row items-center justify-center p-10 gap-10 ">
-        <div className="w-full xl:w-1/2 flex flex-col gap-y-8 ">
-          <TournamentEditCard
-            bannedMaps={["Abbys", "Split"]}
-            date="Saturday, October 26th"
-            team1="Team 1"
-            team1Icon="https://github.com/shadcn.png"
-            team2="Team 2"
-            team2Icon="https://github.com/shadcn.png"
-            tournamentName="Tournament Name"
-            tmIcon="https://github.com/shadcn.png"
-            matchScore1={1}
-            matchScore2={1}
-            stage="PlayOffs: Upper Final"
-            time="1:00 PM +03"
-            bannedMapsOnChange={() => {}}
-            dateOnChange={() => {}}
-            matchScore1OnChange={() => {}}
-            matchScore2OnChange={() => {}}
-            stageOnChange={() => {}}
-            team1IconOnChange={() => {}}
-            team1OnChange={() => {}}
-            team2IconOnChange={() => {}}
-            team2OnChange={() => {}}
-            timeOnChange={() => {}}
-            tournamentNameOnChange={() => {}}
-            tmIconOnChange={() => {}}
-          />
-          <div className="flex flex-col space-y-20">
-            <div className="flex flex-col gap-8">
-              <div className="flex gap-4">
-                <Input className="max-w-64" value={"Map 1"}/>
-                <Button variant={"outline"}><PlusIcon className="size-6" color="#fff" /></Button>
-              </div>
-              <MapHeader
-                team1="Team 1"
-                team2="Team 2"
-                score1={8}
-                score2={13}
-                time="52:48"
-                mapName={maps[activeMapIndex]}
-              />
-              <MapRounds
-                team1={{ name: "TMN", avatar: "https://github.com/shadcn.png" }}
-                team2={{ name: "TMN", avatar: "https://github.com/shadcn.png" }}
-                rounds={Array.from({ length: 24 }).map((_, index) => ({
-                  round: index + 1,
-                  winner: index % 2 === 0,
-                }))}
-              />
+      <div className="flex flex-col items-center justify-center p-10 gap-10 ">
+        <div className="xl:w-1/2 w-full flex flex-col gap-y-8 ">
+          <Card className="p-4 flex flex-col gap-4">
+            <div className="grid grid-cols-2 gap-4 ">
+              <Input value={"Tournament Name"} />
+              <Input value={"Tournament Logo"} />
+              <Input value={"Date"} />
+              <Input value={"Time"} />
+              <Input value={"Team 1 Name"} />
+              <Input value={"Team 1 Logo"} />
+              <Input value={"Team 2 Name"} />
+              <Input value={"Team 2 Logo"} />
+              <Input value={"Bracket"} />
+              <Input value={"Banned maps"} />
             </div>
-            <MapMVP
-              player={{
-                name: "Player Name",
-                avatar: "https://github.com/shadcn.png",
-              }}
-              stats={{ kda: "30/10/10", acs: 350 }}
-            />
-          </div>
+            <Button className="w-full" variant={"secondary"}>
+              Save
+            </Button>
+          </Card>
+          <Card className="p-2 gap-2 flex flex-col">
+            <div className="flex gap-2 ">
+              <div className="flex flex-col gap-2 items-center">
+                <Input className="w-full" value={"Map 1"} />
+                <div className="flex flex-row gap-2 items-center justify-center">
+                  <div className="flex flex-col items-center justify-center gap-1">
+                    <span className="text-xs">TM 1</span>
+                    <Input className="w-10 text-center" value={8} />
+                  </div>
+                  <div className="flex flex-col items-center justify-center gap-1">
+                    <span className="text-xs">TM 2</span>
+                    <Input className="w-10 text-center" value={13} />
+                  </div>
+                  <div className="flex flex-col items-center justify-center gap-1">
+                    <span className="text-xs">Time</span>
+                    <Input className="w-16 text-center" value={13} />
+                  </div>
+                  <div className="flex flex-col items-center justify-center gap-1">
+                    <Button variant={"default"} className="w-full">
+                      <Check />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <Button variant={"secondary"} className="w-10 h-10">
+                <PlusIcon />
+              </Button>
+            </div>
+          </Card>
+          <Card className="p-4 flex flex-col space-y-4 items-start">
+            <div className="flex items-center justify-center gap-2">
+              <span>Round Count</span>
+              <Input className="w-12 text-center" value={24} />
+            </div>
+            <div className="flex items-end justify-center gap-2">
+              <div className="flex flex-col gap-1">
+                <span className="text-xs">T1</span>
+                <span className="text-xs">T2</span>
+              </div>
+              {Array.from({ length: 24 }).map((_, i) => (
+                <div key={i} className="flex flex-col gap-1 items-center ">
+                  <span className="text-xs">{i + 1}</span>
+                  <Popover>
+                    <PopoverTrigger className="size-5 bg-[#161616] hover:bg-[#202020] p-1 rounded-md"></PopoverTrigger>
+                    <PopoverContent className="flex gap-2 w-fit">
+                      <div className="bg-cardbg p-1 size-6 rounded-md"></div>
+                      <div className="flex flex-col gap-1">
+                        <div className="bg-win p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/elim.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                        <div className="bg-lose p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/elim.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="bg-win p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/defuse.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                        <div className="bg-lose p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/defuse.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="bg-win p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/boom.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                        <div className="bg-lose p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/boom.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="bg-win p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/time.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                        <div className="bg-lose p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/time.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                  <Popover>
+                    <PopoverTrigger className="size-5 bg-[#161616] hover:bg-[#202020] p-1 rounded-md"></PopoverTrigger>
+                    <PopoverContent className="flex gap-2 w-fit">
+                      <div className="bg-cardbg p-1 size-6 rounded-md"></div>
+                      <div className="flex flex-col gap-1">
+                        <div className="bg-win p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/elim.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                        <div className="bg-lose p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/elim.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="bg-win p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/defuse.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                        <div className="bg-lose p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/defuse.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="bg-win p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/boom.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                        <div className="bg-lose p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/boom.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="bg-win p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/time.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                        <div className="bg-lose p-1 size-6 rounded-md flex items-center justify-center">
+                          <Image
+                            src={"/time.webp"}
+                            width={100}
+                            height={100}
+                            alt="elim"
+                            className="size-5 w-full h-full"
+                          />
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              ))}
+            </div>
+            <Button className="w-full" variant={"secondary"}>
+              Save
+            </Button>
+          </Card>
         </div>
-        <div className="w-1/2 flex flex-col items-center justify-center space-y-2">
+        <div className="flex flex-col items-center justify-center space-y-2">
           <h1 className="font-bold text-2xl">
             Map Stats: {maps[activeMapIndex]}
           </h1>
-          <Card>
-            <MapTable data={tableData} />
+          <Card className="w-full">
+            <MapTableEdit data={tableData} />
+            <div className="p-4">
+              <Button className="w-full" variant={"secondary"}>
+                Save
+              </Button>
+            </div>
           </Card>
         </div>
       </div>
