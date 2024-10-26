@@ -1,3 +1,9 @@
+export type MapRoundProps = {
+  round: number;
+  type: "elim" | "boom" | "time" | "defuse" | "none";
+  team: boolean;
+  side: "att" | "def";
+};
 export type MapHeaderProps = {
   team1: string;
   team2: string;
