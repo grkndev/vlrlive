@@ -11,7 +11,7 @@ export default function MapHeader({
   return (
     <div className="items-center justify-between flex px-4">
       <div className="items-center justify-center gap-4 flex">
-        <span className="text-3xl font-bold">{score1}</span>
+        <span className="text-4xl font-bold">{score1}</span>
         <span>{team1}</span>
       </div>
       <div className="items-center justify-center flex flex-col">
@@ -20,7 +20,7 @@ export default function MapHeader({
       </div>
       <div className="items-center justify-center gap-4 flex">
         <span>{team2}</span>
-        <span className="text-3xl font-bold">{score2}</span>
+        <span className="text-4xl font-bold">{score2}</span>
       </div>
     </div>
   );
