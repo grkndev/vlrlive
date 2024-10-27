@@ -478,12 +478,10 @@ export default function Home() {
           </Card>
           <Card className="p-4 flex flex-col space-y-4 items-start">
             <div className="flex items-center justify-center gap-2">
-              <span>Round Count</span>
-              <Input
-                className="w-12 text-center"
-                contentEditable={false}
-                value={maps[activeMapIndex].roundData.length}
-              />
+              <span>Round Count: </span>
+              <span>
+                {maps[activeMapIndex].roundData.length}
+              </span>
               <Button
                 onClick={() => createRound()}
                 className="size-5"
@@ -1117,9 +1115,13 @@ export default function Home() {
           <Card className="w-full">
             <MapTableEdit data={tableData} onChange={setTableData} />
             <div className="p-4">
-              <Button onClick={()=>{
-                console.log(tableData)
-              }} className="w-full" variant={"secondary"}>
+              <Button
+                onClick={() => {
+                  console.log(tableData);
+                }}
+                className="w-full"
+                variant={"secondary"}
+              >
                 Save
               </Button>
             </div>
