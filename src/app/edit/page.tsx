@@ -30,172 +30,174 @@ type MapProps = {
 };
 export default function Home() {
   const [activeMapIndex, setActiveMapIndex] = useState(0);
-  const [tableData, setTableData] = useState<MapTableProps>({
-    team1: [
-      {
-        player: "Player Name",
-        agents: ["neon"],
-        rr: "1.52",
-        acs: "200",
-        k: "20",
-        d: "10",
-        a: "5",
-        plusMinus: "10",
-        kast: "80%",
-        adr: "100",
-        hs: "50%",
-        fk: "5",
-        fd: "2",
-        avarage: "10",
-      },
-      {
-        player: "Player Name",
-        agents: ["neon"],
-        rr: "1.52",
-        acs: "200",
-        k: "20",
-        d: "10",
-        a: "5",
-        plusMinus: "10",
-        kast: "80%",
-        adr: "100",
-        hs: "50%",
-        fk: "5",
-        fd: "2",
-        avarage: "10",
-      },
-      {
-        player: "Player Name",
-        agents: ["neon"],
-        rr: "1.52",
-        acs: "200",
-        k: "20",
-        d: "10",
-        a: "5",
-        plusMinus: "10",
-        kast: "80%",
-        adr: "100",
-        hs: "50%",
-        fk: "5",
-        fd: "2",
-        avarage: "10",
-      },
-      {
-        player: "Player Name",
-        agents: ["neon"],
-        rr: "1.52",
-        acs: "200",
-        k: "20",
-        d: "10",
-        a: "5",
-        plusMinus: "10",
-        kast: "80%",
-        adr: "100",
-        hs: "50%",
-        fk: "5",
-        fd: "2",
-        avarage: "10",
-      },
-      {
-        player: "Player Name",
-        agents: ["neon"],
-        rr: "1.52",
-        acs: "200",
-        k: "20",
-        d: "10",
-        a: "5",
-        plusMinus: "10",
-        kast: "80%",
-        adr: "100",
-        hs: "50%",
-        fk: "5",
-        fd: "2",
-        avarage: "10",
-      },
-    ],
-    team2: [
-      {
-        player: "Player Name",
-        agents: ["neon"],
-        rr: "1.52",
-        acs: "200",
-        k: "20",
-        d: "10",
-        a: "5",
-        plusMinus: "10",
-        kast: "80%",
-        adr: "100",
-        hs: "50%",
-        fk: "5",
-        fd: "2",
-        avarage: "10",
-      },
-      {
-        player: "Player Name",
-        agents: ["neon"],
-        rr: "1.52",
-        acs: "200",
-        k: "20",
-        d: "10",
-        a: "5",
-        plusMinus: "10",
-        kast: "80%",
-        adr: "100",
-        hs: "50%",
-        fk: "5",
-        fd: "2",
-        avarage: "10",
-      },
-      {
-        player: "Player Name",
-        agents: ["neon"],
-        rr: "1.52",
-        acs: "200",
-        k: "20",
-        d: "10",
-        a: "5",
-        plusMinus: "10",
-        kast: "80%",
-        adr: "100",
-        hs: "50%",
-        fk: "5",
-        fd: "2",
-        avarage: "10",
-      },
-      {
-        player: "Player Name",
-        agents: ["neon"],
-        rr: "1.52",
-        acs: "200",
-        k: "20",
-        d: "10",
-        a: "5",
-        plusMinus: "10",
-        kast: "80%",
-        adr: "100",
-        hs: "50%",
-        fk: "5",
-        fd: "2",
-        avarage: "10",
-      },
-      {
-        player: "Player Name",
-        agents: ["neon"],
-        rr: "1.52",
-        acs: "200",
-        k: "20",
-        d: "10",
-        a: "5",
-        plusMinus: "10",
-        kast: "80%",
-        adr: "100",
-        hs: "50%",
-        fk: "5",
-        fd: "2",
-        avarage: "10",
-      },
-    ],
-  });
+  const [tableData, setTableData] = useState<MapTableProps[]>([
+    {
+      team1: [
+        {
+          player: "Player Name",
+          agents: ["neon"],
+          rr: "1.52",
+          acs: "200",
+          k: "20",
+          d: "10",
+          a: "5",
+          plusMinus: "10",
+          kast: "80%",
+          adr: "100",
+          hs: "50%",
+          fk: "5",
+          fd: "2",
+          avarage: "10",
+        },
+        {
+          player: "Player Name",
+          agents: ["neon"],
+          rr: "1.52",
+          acs: "200",
+          k: "20",
+          d: "10",
+          a: "5",
+          plusMinus: "10",
+          kast: "80%",
+          adr: "100",
+          hs: "50%",
+          fk: "5",
+          fd: "2",
+          avarage: "10",
+        },
+        {
+          player: "Player Name",
+          agents: ["neon"],
+          rr: "1.52",
+          acs: "200",
+          k: "20",
+          d: "10",
+          a: "5",
+          plusMinus: "10",
+          kast: "80%",
+          adr: "100",
+          hs: "50%",
+          fk: "5",
+          fd: "2",
+          avarage: "10",
+        },
+        {
+          player: "Player Name",
+          agents: ["neon"],
+          rr: "1.52",
+          acs: "200",
+          k: "20",
+          d: "10",
+          a: "5",
+          plusMinus: "10",
+          kast: "80%",
+          adr: "100",
+          hs: "50%",
+          fk: "5",
+          fd: "2",
+          avarage: "10",
+        },
+        {
+          player: "Player Name",
+          agents: ["neon"],
+          rr: "1.52",
+          acs: "200",
+          k: "20",
+          d: "10",
+          a: "5",
+          plusMinus: "10",
+          kast: "80%",
+          adr: "100",
+          hs: "50%",
+          fk: "5",
+          fd: "2",
+          avarage: "10",
+        },
+      ],
+      team2: [
+        {
+          player: "Player Name",
+          agents: ["neon"],
+          rr: "1.52",
+          acs: "200",
+          k: "20",
+          d: "10",
+          a: "5",
+          plusMinus: "10",
+          kast: "80%",
+          adr: "100",
+          hs: "50%",
+          fk: "5",
+          fd: "2",
+          avarage: "10",
+        },
+        {
+          player: "Player Name",
+          agents: ["neon"],
+          rr: "1.52",
+          acs: "200",
+          k: "20",
+          d: "10",
+          a: "5",
+          plusMinus: "10",
+          kast: "80%",
+          adr: "100",
+          hs: "50%",
+          fk: "5",
+          fd: "2",
+          avarage: "10",
+        },
+        {
+          player: "Player Name",
+          agents: ["neon"],
+          rr: "1.52",
+          acs: "200",
+          k: "20",
+          d: "10",
+          a: "5",
+          plusMinus: "10",
+          kast: "80%",
+          adr: "100",
+          hs: "50%",
+          fk: "5",
+          fd: "2",
+          avarage: "10",
+        },
+        {
+          player: "Player Name",
+          agents: ["neon"],
+          rr: "1.52",
+          acs: "200",
+          k: "20",
+          d: "10",
+          a: "5",
+          plusMinus: "10",
+          kast: "80%",
+          adr: "100",
+          hs: "50%",
+          fk: "5",
+          fd: "2",
+          avarage: "10",
+        },
+        {
+          player: "Player Name",
+          agents: ["neon"],
+          rr: "1.52",
+          acs: "200",
+          k: "20",
+          d: "10",
+          a: "5",
+          plusMinus: "10",
+          kast: "80%",
+          adr: "100",
+          hs: "50%",
+          fk: "5",
+          fd: "2",
+          avarage: "10",
+        },
+      ],
+    },
+  ]);
   const [maps, setMaps] = useState<MapProps[]>([
     {
       name: "Bind",
@@ -419,13 +421,13 @@ export default function Home() {
                       <span className="text-xs">Time</span>
                       <Input
                         className="w-16 text-center"
-                        onChange={(e) =>
+                        onChange={(e) => {
                           setMaps(
                             maps.map((m, i) =>
                               i === index ? { ...m, time: e.target.value } : m
                             )
-                          )
-                        }
+                          );
+                        }}
                         value={map.time}
                       />
                     </div>
@@ -438,6 +440,7 @@ export default function Home() {
                         onClick={() => {
                           setActiveMapIndex(0);
                           setMaps(maps.filter((_, i) => i !== index));
+                          setTableData(tableData.filter((_, i) => i !== index));
                         }}
                         variant={"destructive"}
                         className="w-full size-8"
@@ -450,7 +453,8 @@ export default function Home() {
               ))}
 
               <Button
-                onClick={() =>
+                onClick={() => {
+                  setTableData([...tableData, tableData[0]]);
                   setMaps([
                     ...maps,
                     {
@@ -467,8 +471,8 @@ export default function Home() {
                         },
                       ],
                     },
-                  ])
-                }
+                  ]);
+                }}
                 variant={"secondary"}
                 className="w-10 h-10"
               >
@@ -479,9 +483,7 @@ export default function Home() {
           <Card className="p-4 flex flex-col space-y-4 items-start">
             <div className="flex items-center justify-center gap-2">
               <span>Round Count: </span>
-              <span>
-                {maps[activeMapIndex].roundData.length}
-              </span>
+              <span>{maps[activeMapIndex].roundData.length}</span>
               <Button
                 onClick={() => createRound()}
                 className="size-5"
@@ -1113,11 +1115,20 @@ export default function Home() {
             Map Stats: {maps[activeMapIndex].name}
           </h1>
           <Card className="w-full">
-            <MapTableEdit data={tableData} onChange={setTableData} />
+            <MapTableEdit
+              data={tableData[activeMapIndex]}
+              onChange={(newData) => {
+                setTableData(
+                  tableData.map((data, index) =>
+                    index === activeMapIndex ? newData : data
+                  )
+                );
+              }}
+            />
             <div className="p-4">
               <Button
                 onClick={() => {
-                  console.log(tableData);
+                
                 }}
                 className="w-full"
                 variant={"secondary"}
