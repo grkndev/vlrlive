@@ -59,56 +59,120 @@ const tableData: MapTableProps = {
     },
   ],
 };
+type MapProps = {
+  name: string;
+  tm1: string;
+  tm2: string;
+  time: string;
+  roundData: MapRoundProps[];
+};
 export default function Home() {
   const [activeMapIndex, setActiveMapIndex] = useState(0);
-  const [roundCount, setRoundCount] = useState(24);
-  const [roundData, setRoundData] = useState<MapRoundProps[]>([
-    {
-      round: 1,
-      type: "none",
-      team: false,
-      side: "att",
-    },
-  ]);
-
-  useEffect(() => {
-    if (roundCount < roundData.length) {
-      setRoundData(
-        roundData
-          .filter((_, i) => i < roundCount)
-          .map((round, i) => {
-            if (i >= roundData.length) {
-              return {
-                round: i + 1,
-                type: "none",
-                team: false,
-                side: "att",
-              };
-            }
-            return round;
-          })
-      );
-    } else {
-      setRoundData([
-        ...roundData,
-        {
-          round: roundData.length + 1,
-          type: "none",
-          team: false,
-          side: "att",
-        },
-      ]);
-    }
-  }, [roundCount]);
-
-  const [maps, setMaps] = useState([
+  // const [roundCount, setRoundCount] = useState(2);
+  const [maps, setMaps] = useState<MapProps[]>([
     {
       name: "Bind",
       tm1: "13",
       tm2: "8",
       time: "13:00",
+      roundData: [
+        {
+          round: 1,
+          type: "none",
+          team: false,
+          side: "att",
+        },
+      ],
     },
   ]);
+
+  // useEffect(() => {
+  //   if (roundCount < maps[activeMapIndex].roundData.length) {
+  //     setMaps(
+  //       maps.map((map, mapIndex) => {
+  //         if (mapIndex === activeMapIndex) {
+  //           return {
+  //             ...map,
+  //             roundData: map.roundData
+  //               .filter((_, i) => i < roundCount)
+  //               .map((round, i) => {
+  //                 if (i >= map.roundData.length) {
+  //                   return {
+  //                     round: i + 1,
+  //                     type: "none",
+  //                     team: false,
+  //                     side: "att",
+  //                   };
+  //                 }
+  //                 return round;
+  //               }),
+  //           };
+  //         }
+  //         return map;
+  //       })
+  //     );
+  //   } else {
+  //     setMaps(
+  //       maps.map((map, mapIndex) => {
+  //         if (mapIndex === activeMapIndex) {
+  //           return {
+  //             ...map,
+  //             roundData: [
+  //               ...map.roundData,
+  //               {
+  //                 round: map.roundData.length + 1,
+  //                 type: "none",
+  //                 team: false,
+  //                 side: "att",
+  //               },
+  //             ],
+  //           };
+  //         }
+  //         return map;
+  //       })
+  //     );
+  //   }
+  // }, [roundCount]);
+  function createRound() {
+    setMaps(
+      maps.map((map, mapIndex) => {
+        if (mapIndex === activeMapIndex) {
+          return {
+            ...map,
+            roundData: [
+              ...map.roundData,
+              {
+                round: map.roundData.length + 1,
+                type: "none",
+                team: false,
+                side: "att",
+              },
+            ],
+          };
+        }
+        return map;
+      })
+    );
+  }
+  function deleteRound() {
+    setMaps(
+      maps.map((map, mapIndex) => {
+        if (mapIndex === activeMapIndex) {
+          return {
+            ...map,
+            roundData: map.roundData.filter(
+              (_, i) => i < map.roundData.length - 1
+            ),
+          };
+        }
+        return map;
+      })
+    );
+  }
+  function handleMapChange(index: number) {
+    setActiveMapIndex(index);
+  }
+
   const [tournamentData, setTournamentData] = useState({
     name: "Tournament Name",
     logo: "Tournament Logo",
@@ -232,6 +296,7 @@ export default function Home() {
               {maps.map((map, index) => (
                 <div key={index} className="flex flex-col gap-2 items-center">
                   <Input
+                    onFocus={() => handleMapChange(index)}
                     className="w-full"
                     value={map.name}
                     onChange={(e) => {
@@ -291,9 +356,10 @@ export default function Home() {
                       </Button>
                       <Button
                         disabled={maps.length == 1}
-                        onClick={() =>
-                          setMaps(maps.filter((_, i) => i !== index))
-                        }
+                        onClick={() => {
+                          setActiveMapIndex(0);
+                          setMaps(maps.filter((_, i) => i !== index));
+                        }}
                         variant={"destructive"}
                         className="w-full size-8"
                       >
@@ -313,6 +379,14 @@ export default function Home() {
                       tm1: "0",
                       tm2: "0",
                       time: "0:00",
+                      roundData: [
+                        {
+                          round: 1,
+                          type: "none",
+                          team: false,
+                          side: "att",
+                        },
+                      ],
                     },
                   ])
                 }
@@ -329,17 +403,18 @@ export default function Home() {
               <Input
                 className="w-12 text-center"
                 contentEditable={false}
-                value={roundCount}
+                value={maps[activeMapIndex].roundData.length}
               />
               <Button
-                onClick={() => setRoundCount(roundCount + 1)}
+                onClick={() => createRound()}
                 className="size-5"
                 variant={"secondary"}
               >
                 <PlusIcon />
               </Button>
               <Button
-                onClick={() => setRoundCount(roundCount - 1)}
+                disabled={maps[activeMapIndex].roundData.length == 1}
+                onClick={() => deleteRound()}
                 className="size-5"
                 variant={"secondary"}
               >
@@ -351,15 +426,21 @@ export default function Home() {
                 <span className="text-xs">T1</span>
                 <span className="text-xs">T2</span>
               </div>
-              {roundData.map((round, index) => (
+              {maps[activeMapIndex].roundData.map((round, index) => (
                 <div key={index} className="flex flex-col gap-1 items-center ">
                   <span className="text-xs">{round.round}</span>
                   <Popover>
                     <PopoverTrigger
                       className={cn(
                         "size-6 bg-[#161616] hover:bg-[#202020] p-1 rounded-md",
-                        round.type !== "none" && !round.team && round.side === "att" && "bg-lose",
-                        round.type !== "none" && !round.team && round.side === "def" && "bg-win"
+                        round.type !== "none" &&
+                          !round.team &&
+                          round.side === "att" &&
+                          "bg-lose",
+                        round.type !== "none" &&
+                          !round.team &&
+                          round.side === "def" &&
+                          "bg-win"
                       )}
                     >
                       {!round.team && round.type !== "none" && (
@@ -377,17 +458,25 @@ export default function Home() {
                       <div className="flex flex-col gap-1">
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "elim",
-                                      side: "def",
-                                      team: false,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "elim",
+                                            side: "def",
+                                            team: false,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-win p-1 size-6 rounded-md flex items-center justify-center"
@@ -402,17 +491,25 @@ export default function Home() {
                         </div>
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "elim",
-                                      side: "att",
-                                      team: false,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "elim",
+                                            side: "att",
+                                            team: false,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-lose p-1 size-6 rounded-md flex items-center justify-center"
@@ -429,17 +526,25 @@ export default function Home() {
                       <div className="flex flex-col gap-1">
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "defuse",
-                                      side: "def",
-                                      team: false,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "defuse",
+                                            side: "def",
+                                            team: false,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-win p-1 size-6 rounded-md flex items-center justify-center"
@@ -454,17 +559,25 @@ export default function Home() {
                         </div>
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "defuse",
-                                      side: "att",
-                                      team: false,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "defuse",
+                                            side: "att",
+                                            team: false,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-lose p-1 size-6 rounded-md flex items-center justify-center"
@@ -481,17 +594,25 @@ export default function Home() {
                       <div className="flex flex-col gap-1">
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "boom",
-                                      side: "def",
-                                      team: false,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "boom",
+                                            side: "def",
+                                            team: false,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-win p-1 size-6 rounded-md flex items-center justify-center"
@@ -506,17 +627,25 @@ export default function Home() {
                         </div>
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "boom",
-                                      side: "att",
-                                      team: false,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "boom",
+                                            side: "att",
+                                            team: false,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-lose p-1 size-6 rounded-md flex items-center justify-center"
@@ -533,17 +662,25 @@ export default function Home() {
                       <div className="flex flex-col gap-1">
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "time",
-                                      side: "def",
-                                      team: false,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "time",
+                                            side: "def",
+                                            team: false,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-win p-1 size-6 rounded-md flex items-center justify-center"
@@ -558,17 +695,25 @@ export default function Home() {
                         </div>
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "time",
-                                      side: "att",
-                                      team: false,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "time",
+                                            side: "att",
+                                            team: false,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-lose p-1 size-6 rounded-md flex items-center justify-center"
@@ -607,17 +752,25 @@ export default function Home() {
                       <div className="flex flex-col gap-1">
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "elim",
-                                      side: "def",
-                                      team: true,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "elim",
+                                            side: "def",
+                                            team: true,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-win p-1 size-6 rounded-md flex items-center justify-center"
@@ -632,17 +785,25 @@ export default function Home() {
                         </div>
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "elim",
-                                      side: "att",
-                                      team: true,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "elim",
+                                            side: "att",
+                                            team: true,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-lose p-1 size-6 rounded-md flex items-center justify-center"
@@ -659,17 +820,25 @@ export default function Home() {
                       <div className="flex flex-col gap-1">
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "defuse",
-                                      side: "def",
-                                      team: true,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "defuse",
+                                            side: "def",
+                                            team: true,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-win p-1 size-6 rounded-md flex items-center justify-center"
@@ -684,17 +853,25 @@ export default function Home() {
                         </div>
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "defuse",
-                                      side: "att",
-                                      team: true,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "defuse",
+                                            side: "att",
+                                            team: true,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-lose p-1 size-6 rounded-md flex items-center justify-center"
@@ -711,17 +888,25 @@ export default function Home() {
                       <div className="flex flex-col gap-1">
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "boom",
-                                      side: "def",
-                                      team: true,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "boom",
+                                            side: "def",
+                                            team: true,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-win p-1 size-6 rounded-md flex items-center justify-center"
@@ -736,17 +921,25 @@ export default function Home() {
                         </div>
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "boom",
-                                      side: "att",
-                                      team: true,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "boom",
+                                            side: "att",
+                                            team: true,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-lose p-1 size-6 rounded-md flex items-center justify-center"
@@ -763,17 +956,25 @@ export default function Home() {
                       <div className="flex flex-col gap-1">
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "time",
-                                      side: "def",
-                                      team: true,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "time",
+                                            side: "def",
+                                            team: true,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-win p-1 size-6 rounded-md flex items-center justify-center"
@@ -788,17 +989,25 @@ export default function Home() {
                         </div>
                         <div
                           onClick={() => {
-                            setRoundData(
-                              roundData.map((r, i) =>
-                                i === index
-                                  ? {
-                                      ...r,
-                                      type: "time",
-                                      side: "att",
-                                      team: true,
-                                    }
-                                  : r
-                              )
+                            setMaps(
+                              maps.map((map, mapIndex) => {
+                                if (mapIndex === activeMapIndex) {
+                                  return {
+                                    ...map,
+                                    roundData: map.roundData.map((r, i) =>
+                                      i === index
+                                        ? {
+                                            ...r,
+                                            type: "time",
+                                            side: "att",
+                                            team: true,
+                                          }
+                                        : r
+                                    ),
+                                  };
+                                }
+                                return map;
+                              })
                             );
                           }}
                           className="bg-lose p-1 size-6 rounded-md flex items-center justify-center"
