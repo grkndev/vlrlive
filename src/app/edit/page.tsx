@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/popover";
 import MapTableEdit from "@/components/MapTableEdit";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 type MapProps = {
   name: string;
@@ -29,6 +30,7 @@ type MapProps = {
   roundData: MapRoundProps[];
 };
 export default function Home() {
+  const { toast } = useToast();
   const [activeMapIndex, setActiveMapIndex] = useState(0);
   const [tableData, setTableData] = useState<MapTableProps[]>([
     {
@@ -273,23 +275,52 @@ export default function Home() {
     fetch("/api/saveTournamentData", {
       method: "POST",
       body: JSON.stringify(tournamentData),
-    });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          handleToast("Tournament Data Saved");
+        } else {
+          handleToast("Tournament Data Save Failed", true);
+        }
+      });
   }
   // SAVE MAP DATA
   function saveMapData() {
     fetch("/api/saveMapData", {
       method: "POST",
       body: JSON.stringify(maps),
-    });
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          handleToast("Map Data Saved");
+        } else {
+          handleToast("Map Data Save Failed", true);
+        }
+      });
   }
   // SAVE TABLE DATA
   function saveTableData() {
     fetch("/api/saveTableData", {
       method: "POST",
       body: JSON.stringify(tableData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          handleToast("Table Data Saved");
+        } else {
+          handleToast("Table Data Save Failed", true);
+        }
+      });
+  }
+  function handleToast(message: string, error?: boolean) {
+    toast({
+      title: message,
+      variant: error ? "destructive" : "default",
     });
   }
-  
 
   return (
     <div className="w-full flex flex-col">
