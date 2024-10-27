@@ -214,6 +214,19 @@ export default function Home() {
       ],
     },
   ]);
+  const [tournamentData, setTournamentData] = useState({
+    name: "Tournament Name",
+    logo: "Tournament Logo",
+    date: "Date",
+    time: "Time",
+    team1: "Team 1 Name",
+    team1Logo: "Team 1 Logo",
+    team2: "Team 2 Name",
+    team2Logo: "Team 2 Logo",
+    bracket: "Bracket",
+    bannedMaps: "Banned maps",
+  });
+
   function createRound() {
     setMaps(
       maps.map((map, mapIndex) => {
@@ -254,18 +267,29 @@ export default function Home() {
     setActiveMapIndex(index);
   }
 
-  const [tournamentData, setTournamentData] = useState({
-    name: "Tournament Name",
-    logo: "Tournament Logo",
-    date: "Date",
-    time: "Time",
-    team1: "Team 1 Name",
-    team1Logo: "Team 1 Logo",
-    team2: "Team 2 Name",
-    team2Logo: "Team 2 Logo",
-    bracket: "Bracket",
-    bannedMaps: "Banned maps",
-  });
+  //API ROUTES
+  // SAVE TOURNAMENT DATA
+  function saveTournamentData() {
+    fetch("/api/saveTournamentData", {
+      method: "POST",
+      body: JSON.stringify(tournamentData),
+    });
+  }
+  // SAVE MAP DATA
+  function saveMapData() {
+    fetch("/api/saveMapData", {
+      method: "POST",
+      body: JSON.stringify(maps),
+    });
+  }
+  // SAVE TABLE DATA
+  function saveTableData() {
+    fetch("/api/saveTableData", {
+      method: "POST",
+      body: JSON.stringify(tableData),
+    });
+  }
+  
 
   return (
     <div className="w-full flex flex-col">
@@ -1127,9 +1151,7 @@ export default function Home() {
             />
             <div className="p-4">
               <Button
-                onClick={() => {
-                
-                }}
+                onClick={() => {}}
                 className="w-full"
                 variant={"secondary"}
               >
