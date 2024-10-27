@@ -21,44 +21,6 @@ import {
 import MapTableEdit from "@/components/MapTableEdit";
 import { cn } from "@/lib/utils";
 
-const tableData: MapTableProps = {
-  team1: [
-    {
-      player: "Player Name",
-      agents: ["neon"],
-      rr: "1.52",
-      acs: "200",
-      k: "20",
-      d: "10",
-      a: "5",
-      plusMinus: "10",
-      kast: "80%",
-      adr: "100",
-      hs: "50%",
-      fk: "5",
-      fd: "2",
-      avarage: "10",
-    },
-  ],
-  team2: [
-    {
-      player: "Player Name",
-      agents: ["neon"],
-      rr: "1.52",
-      acs: "200",
-      k: "20",
-      d: "10",
-      a: "5",
-      plusMinus: "10",
-      kast: "80%",
-      adr: "100",
-      hs: "50%",
-      fk: "5",
-      fd: "2",
-      avarage: "10",
-    },
-  ],
-};
 type MapProps = {
   name: string;
   tm1: string;
@@ -68,7 +30,172 @@ type MapProps = {
 };
 export default function Home() {
   const [activeMapIndex, setActiveMapIndex] = useState(0);
-  // const [roundCount, setRoundCount] = useState(2);
+  const [tableData, setTableData] = useState<MapTableProps>({
+    team1: [
+      {
+        player: "Player Name",
+        agents: ["neon"],
+        rr: "1.52",
+        acs: "200",
+        k: "20",
+        d: "10",
+        a: "5",
+        plusMinus: "10",
+        kast: "80%",
+        adr: "100",
+        hs: "50%",
+        fk: "5",
+        fd: "2",
+        avarage: "10",
+      },
+      {
+        player: "Player Name",
+        agents: ["neon"],
+        rr: "1.52",
+        acs: "200",
+        k: "20",
+        d: "10",
+        a: "5",
+        plusMinus: "10",
+        kast: "80%",
+        adr: "100",
+        hs: "50%",
+        fk: "5",
+        fd: "2",
+        avarage: "10",
+      },
+      {
+        player: "Player Name",
+        agents: ["neon"],
+        rr: "1.52",
+        acs: "200",
+        k: "20",
+        d: "10",
+        a: "5",
+        plusMinus: "10",
+        kast: "80%",
+        adr: "100",
+        hs: "50%",
+        fk: "5",
+        fd: "2",
+        avarage: "10",
+      },
+      {
+        player: "Player Name",
+        agents: ["neon"],
+        rr: "1.52",
+        acs: "200",
+        k: "20",
+        d: "10",
+        a: "5",
+        plusMinus: "10",
+        kast: "80%",
+        adr: "100",
+        hs: "50%",
+        fk: "5",
+        fd: "2",
+        avarage: "10",
+      },
+      {
+        player: "Player Name",
+        agents: ["neon"],
+        rr: "1.52",
+        acs: "200",
+        k: "20",
+        d: "10",
+        a: "5",
+        plusMinus: "10",
+        kast: "80%",
+        adr: "100",
+        hs: "50%",
+        fk: "5",
+        fd: "2",
+        avarage: "10",
+      },
+    ],
+    team2: [
+      {
+        player: "Player Name",
+        agents: ["neon"],
+        rr: "1.52",
+        acs: "200",
+        k: "20",
+        d: "10",
+        a: "5",
+        plusMinus: "10",
+        kast: "80%",
+        adr: "100",
+        hs: "50%",
+        fk: "5",
+        fd: "2",
+        avarage: "10",
+      },
+      {
+        player: "Player Name",
+        agents: ["neon"],
+        rr: "1.52",
+        acs: "200",
+        k: "20",
+        d: "10",
+        a: "5",
+        plusMinus: "10",
+        kast: "80%",
+        adr: "100",
+        hs: "50%",
+        fk: "5",
+        fd: "2",
+        avarage: "10",
+      },
+      {
+        player: "Player Name",
+        agents: ["neon"],
+        rr: "1.52",
+        acs: "200",
+        k: "20",
+        d: "10",
+        a: "5",
+        plusMinus: "10",
+        kast: "80%",
+        adr: "100",
+        hs: "50%",
+        fk: "5",
+        fd: "2",
+        avarage: "10",
+      },
+      {
+        player: "Player Name",
+        agents: ["neon"],
+        rr: "1.52",
+        acs: "200",
+        k: "20",
+        d: "10",
+        a: "5",
+        plusMinus: "10",
+        kast: "80%",
+        adr: "100",
+        hs: "50%",
+        fk: "5",
+        fd: "2",
+        avarage: "10",
+      },
+      {
+        player: "Player Name",
+        agents: ["neon"],
+        rr: "1.52",
+        acs: "200",
+        k: "20",
+        d: "10",
+        a: "5",
+        plusMinus: "10",
+        kast: "80%",
+        adr: "100",
+        hs: "50%",
+        fk: "5",
+        fd: "2",
+        avarage: "10",
+      },
+    ],
+  });
   const [maps, setMaps] = useState<MapProps[]>([
     {
       name: "Bind",
@@ -1036,9 +1163,11 @@ export default function Home() {
             Map Stats: {maps[activeMapIndex].name}
           </h1>
           <Card className="w-full">
-            <MapTableEdit data={tableData} />
+            <MapTableEdit data={tableData} onChange={setTableData} />
             <div className="p-4">
-              <Button className="w-full" variant={"secondary"}>
+              <Button onClick={()=>{
+                console.log(tableData)
+              }} className="w-full" variant={"secondary"}>
                 Save
               </Button>
             </div>
