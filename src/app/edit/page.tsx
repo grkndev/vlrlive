@@ -212,54 +212,6 @@ export default function Home() {
       ],
     },
   ]);
-
-  // useEffect(() => {
-  //   if (roundCount < maps[activeMapIndex].roundData.length) {
-  //     setMaps(
-  //       maps.map((map, mapIndex) => {
-  //         if (mapIndex === activeMapIndex) {
-  //           return {
-  //             ...map,
-  //             roundData: map.roundData
-  //               .filter((_, i) => i < roundCount)
-  //               .map((round, i) => {
-  //                 if (i >= map.roundData.length) {
-  //                   return {
-  //                     round: i + 1,
-  //                     type: "none",
-  //                     team: false,
-  //                     side: "att",
-  //                   };
-  //                 }
-  //                 return round;
-  //               }),
-  //           };
-  //         }
-  //         return map;
-  //       })
-  //     );
-  //   } else {
-  //     setMaps(
-  //       maps.map((map, mapIndex) => {
-  //         if (mapIndex === activeMapIndex) {
-  //           return {
-  //             ...map,
-  //             roundData: [
-  //               ...map.roundData,
-  //               {
-  //                 round: map.roundData.length + 1,
-  //                 type: "none",
-  //                 team: false,
-  //                 side: "att",
-  //               },
-  //             ],
-  //           };
-  //         }
-  //         return map;
-  //       })
-  //     );
-  //   }
-  // }, [roundCount]);
   function createRound() {
     setMaps(
       maps.map((map, mapIndex) => {
